@@ -37,6 +37,10 @@ class _CoreAppState extends State<CoreApp> {
                 listener: (BuildContext context,
                     UIBlocState state) {
                   debugPrint('UIBloc Listener state :: ${state.toString()} ');
+                  if(state is UIBlocStateRefreshWeather){
+                    _weatherBloc.getHomeWeather();
+                  }
+
                 }),
             BlocListener<WeatherBloc, WeatherBlocState>(
                 bloc: _weatherBloc,

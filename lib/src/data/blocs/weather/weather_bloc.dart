@@ -19,12 +19,14 @@ class WeatherBloc extends Bloc<WeatherBlocEvent, WeatherBlocState> {
     WeatherBlocEvent event,
   ) async* {
     if (event is WeatherBlocEventInit) {
-      final double latitude = 40.7143;
-      final double longitude = -74.0060;
+      final double _latitude = 40.7143;
+      final double _longitude = -74.0060;
 
+
+      yield WeatherBlocStateLoading(state);
       final BaseWeather baseWeather = await _weatherServices.getWeatherDataLatLong(
-          latitude: latitude.toString(),
-          longitude: longitude.toString());
+          latitude: _latitude.toString(),
+          longitude: _longitude.toString());
 
       yield WeatherBlocStateUpdate(state, baseWeather: baseWeather);
     }

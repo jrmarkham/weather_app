@@ -30,6 +30,7 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       weatherCard(state.baseWeather),
 
+                      SizedBox(height: 20.0),
                       ElevatedButton(onPressed: _refreshFunction, child: Text
                         ('Refresh'))
                     ],
