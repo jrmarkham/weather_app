@@ -3,14 +3,11 @@
 Weather App
 
 ## Getting Started
+Palmetto Programming Challenge
+Weather App
+This is a chance to challenge your creativity and coding prowess, by building a React app to display weather information. The UI implementation should prompt for a location, and display the resulting weather. There are several free weather APIs available to choose from. Pick one, consume it, and display the information you feel is relevant.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+I hard code a location (New York City) for this sample. The plugin for 
+location have security issues running on simulator/emulator, so I focused 
+on the weather api. I stubbed out pages and code for expansion. A search 
+feature and an around the world screen.   
