@@ -1,6 +1,5 @@
 # Weather App
 
-Palmetto Programming Challenge
 Weather App
 
 I hard code a location (New York City) for this sample. The various plugins for 
