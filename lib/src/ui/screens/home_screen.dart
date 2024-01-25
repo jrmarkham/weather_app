@@ -24,11 +24,15 @@ class HomeScreen extends StatelessWidget {
         }
 
         return MainScreenScaffold(
-            body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               if (state.status == WeatherLocationStatus.loaded) ...[
+                const Spacer(),
                 WeatherCard(data: state.userWeatherLocation!, theme: theme),
                 Text('note your weather info refreshes every 5 minutes', style: theme.textTheme.bodyMedium),
+                const Spacer(),
+                const Spacer(),
                 TextButton(onPressed: () => weatherLocationCubit.requestLocation(), child: Text('Refresh Now', style: theme.textTheme.titleMedium)),
+                const Spacer(),
               ],
               if (state.status == WeatherLocationStatus.error) ...[
                 Text('Services are unavailable ', style: theme.textTheme.titleLarge?.copyWith(color: Colors.red)),

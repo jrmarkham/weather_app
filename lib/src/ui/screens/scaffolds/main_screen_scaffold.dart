@@ -51,7 +51,7 @@ class MainScreenScaffold extends StatelessWidget {
             ? BottomNavigationBar(items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'Home', backgroundColor: theme.colorScheme.secondary),
                 BottomNavigationBarItem(icon: const Icon(Icons.search), label: 'Search', backgroundColor: theme.colorScheme.secondary),
-                BottomNavigationBarItem(icon: const Icon(Icons.settings), label: 'Setting', backgroundColor: theme.colorScheme.secondary),
+                BottomNavigationBarItem(icon: const Icon(Icons.settings), label: 'Settings', backgroundColor: theme.colorScheme.secondary),
               ], currentIndex: navCubit.state.index, selectedItemColor: theme.colorScheme.primary, onTap: updateNav)
             : const SizedBox());
   }

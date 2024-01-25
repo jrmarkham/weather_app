@@ -8,7 +8,8 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => MainScreenScaffold(
         body: Column(
-          children: [Text('Setting', style: theme.textTheme.titleLarge), Text('got nuthin\' yet', style: theme.textTheme.bodyMedium)],
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text('Settings', style: theme.textTheme.titleLarge), Text('got nuthin\' yet', style: theme.textTheme.bodyMedium)],
         ),
       );
 }
