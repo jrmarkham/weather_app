@@ -48,11 +48,18 @@ class MainScreenScaffold extends StatelessWidget {
           child: SizedBox(width: mediaData.size.width, child: body),
         ),
         bottomNavigationBar: showNav
-            ? BottomNavigationBar(items: <BottomNavigationBarItem>[
-                BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'Home', backgroundColor: theme.colorScheme.secondary),
-                BottomNavigationBarItem(icon: const Icon(Icons.search), label: 'Search', backgroundColor: theme.colorScheme.secondary),
-                BottomNavigationBarItem(icon: const Icon(Icons.settings), label: 'Settings', backgroundColor: theme.colorScheme.secondary),
-              ], currentIndex: navCubit.state.index, selectedItemColor: theme.colorScheme.primary, onTap: updateNav)
+            ? BottomNavigationBar(
+                unselectedFontSize: 14.0,
+                selectedFontSize: 18.0,
+                iconSize: 30.0,
+                items: <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(icon: const Icon(Icons.home), label: 'Home', backgroundColor: theme.colorScheme.secondary),
+                  BottomNavigationBarItem(icon: const Icon(Icons.search), label: 'Search', backgroundColor: theme.colorScheme.secondary),
+                  BottomNavigationBarItem(icon: const Icon(Icons.settings), label: 'Settings', backgroundColor: theme.colorScheme.secondary),
+                ],
+                currentIndex: navCubit.state.index,
+                selectedItemColor: theme.colorScheme.primary,
+                onTap: updateNav)
             : const SizedBox());
   }
 }
