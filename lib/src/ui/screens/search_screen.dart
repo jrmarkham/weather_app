@@ -56,46 +56,44 @@ class SearchScreen extends StatelessWidget {
         bloc: weatherLocationCubit,
         builder: (BuildContext context, WeatherLocationState state) {
           return MainScreenScaffold(
-              body: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (state.status == WeatherLocationStatus.loaded) ...[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                      onTap: () => showOverLay(state.userWeatherLocation!), child: WeatherMiniCard(data: state.userWeatherLocation!, theme: theme)),
+              body: Column(mainAxisSize: MainAxisSize.max, mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            if (state.status == WeatherLocationStatus.loaded) ...[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text('Home Location: ', style: theme.textTheme.titleSmall),
+                    InkWell(
+                        onTap: () => showOverLay(state.userWeatherLocation!), child: WeatherMiniCard(data: state.userWeatherLocation!, theme: theme)),
+                  ],
                 ),
-                SizedBox(
-                  width: mediaData.size.width * .85,
-                  height: mediaData.size.height * 0.35,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FlutterLocationPicker(
-                      initPosition: const LatLong(_defaultLatitude, _defaultLongitude),
-                      initZoom: 11,
-                      minZoomLevel: 5,
-                      maxZoomLevel: 16,
-                      trackMyPosition: true,
-                      onPicked: addLocationToList,
-                    ),
+              ),
+              SizedBox(
+                width: mediaData.size.width * .85,
+                height: mediaData.size.height * 0.45,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FlutterLocationPicker(
+                    initPosition: const LatLong(_defaultLatitude, _defaultLongitude),
+                    initZoom: 11,
+                    minZoomLevel: 5,
+                    maxZoomLevel: 16,
+                    trackMyPosition: true,
+                    onPicked: addLocationToList,
                   ),
                 ),
-                Expanded(
-                    child: state.weatherLocationList.isEmpty
-                        ? const SizedBox.shrink()
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListView.builder(
-                                itemCount: state.weatherLocationList.length,
-                                itemBuilder: (BuildContext context, int idx) {
-                                  final AppWeatherLocationData data = state.weatherLocationList[idx];
-                                  return InkWell(onTap: () => showOverLay(data), child: WeatherMiniCard(data: data, theme: theme));
-                                }),
-                          )),
-              ]
+              ),
+              Expanded(
+                  child: state.weatherLocationList.isEmpty
+                      ? const SizedBox.shrink()
+                      : ListView.builder(
+                          itemCount: state.weatherLocationList.length,
+                          itemBuilder: (BuildContext context, int idx) {
+                            final AppWeatherLocationData data = state.weatherLocationList[idx];
+                            return InkWell(onTap: () => showOverLay(data), child: WeatherMiniCard(data: data, theme: theme));
+                          }))
             ],
-          ));
+          ]));
         });
   }
 }
