@@ -8,7 +8,7 @@ import 'package:weather/src/globals.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  Widget _testWidget(Widget testWidget) {
+  Widget testWidget(Widget testWidget) {
     return MaterialApp(
         home: Scaffold(
       body: Container(
@@ -32,7 +32,7 @@ void main() {
                   shortForecast: 'bad weather')),
           theme: theme);
 
-      await tester.pumpWidget(_testWidget(testWeatherCar));
+      await tester.pumpWidget(testWidget(testWeatherCar));
       expect(find.byType(SizedBox), findsOneWidget);
       expect(find.byType(Column), findsOneWidget);
       expect(find.byType(Text), findsWidgets);
