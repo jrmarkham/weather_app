@@ -15,23 +15,32 @@ class WeatherCard extends StatelessWidget {
           children: [
             Text(
               data.location.name,
-              style: theme.textTheme.titleMedium,
-              softWrap: true,
-            ),
-            Text(
-              'lat: ${data.location.latitude} long: ${data.location.longitude} ',
               style: theme.textTheme.titleSmall,
               softWrap: true,
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              'latitude: ${data.location.latitude}',
+              style: theme.textTheme.bodyMedium,
+              softWrap: true,
+              textAlign: TextAlign.start,
+            ),
+            Text(
+              'longitude: ${data.location.longitude}',
+              style: theme.textTheme.bodyMedium,
+              softWrap: true,
+              textAlign: TextAlign.start,
             ),
             Text(
               '${data.weather.temperature} ${data.weather.temperatureUnit}',
-              style: theme.textTheme.bodyMedium,
+              style: theme.textTheme.titleMedium,
               softWrap: true,
             ),
             Text(
               '${data.weather.shortForecast} ',
               style: theme.textTheme.bodyMedium,
               softWrap: true,
+              textAlign: TextAlign.center,
             ),
             Text(
               'Wind Speed: ${data.weather.windSpeed} Direction:${data.weather.windDirection}',
@@ -43,6 +52,7 @@ class WeatherCard extends StatelessWidget {
               data.weather.detailedForecast,
               style: theme.textTheme.bodySmall,
               softWrap: true,
+              textAlign: TextAlign.start,
             ),
           ],
         ),

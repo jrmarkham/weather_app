@@ -67,7 +67,7 @@ class WeatherLocationCubit extends Cubit<WeatherLocationState> {
         location: AppLocationData(name: home, latitude: location.latitude.toString(), longitude: location.longitude.toString()),
         weather: weatherData);
 
-    emit(state.copyWith(WeatherLocationStatus.loaded, updateUserWeatherLocation: mainData, updateWeatherLocationList: [mainData]));
+    emit(state.copyWith(WeatherLocationStatus.loaded, updateUserWeatherLocation: mainData));
   }
 
   Future<void> addLocation(AppLocationData locationData) async {

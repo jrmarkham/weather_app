@@ -14,6 +14,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final WeatherLocationCubit weatherLocationCubit = BlocProvider.of<WeatherLocationCubit>(context);
 
+    Future.delayed(const Duration(minutes: 5), () => weatherLocationCubit.requestLocation());
+
     return BlocBuilder<WeatherLocationCubit, WeatherLocationState>(
       bloc: weatherLocationCubit,
       builder: (BuildContext context, WeatherLocationState state) {
@@ -22,8 +24,12 @@ class HomeScreen extends StatelessWidget {
         }
 
         return MainScreenScaffold(
-            body: Column(children: [
-              if (state.status == WeatherLocationStatus.loaded) ...[WeatherCard(data: state.userWeatherLocation!, theme: theme)],
+            body: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+              if (state.status == WeatherLocationStatus.loaded) ...[
+                WeatherCard(data: state.userWeatherLocation!, theme: theme),
+                Text('note your weather info refreshes every 5 minutes', style: theme.textTheme.bodyMedium),
+                TextButton(onPressed: () => weatherLocationCubit.requestLocation(), child: Text('Refresh Now', style: theme.textTheme.titleMedium)),
+              ],
               if (state.status == WeatherLocationStatus.error) ...[
                 Text('Services are unavailable ', style: theme.textTheme.titleLarge?.copyWith(color: Colors.red)),
                 if (state.status == WeatherLocationStatus.init || state.status == WeatherLocationStatus.loading) ...[

@@ -18,12 +18,12 @@ class WeatherMiniCard extends StatelessWidget {
             children: [
               Text(
                 data.location.name,
-                style: theme.textTheme.titleSmall,
+                style: theme.textTheme.bodyMedium,
                 softWrap: true,
               ),
               Text(
                 '${data.weather.temperature} ${data.weather.temperatureUnit}',
-                style: theme.textTheme.titleSmall,
+                style: theme.textTheme.bodyMedium,
               ),
             ],
           ),
