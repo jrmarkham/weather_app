@@ -1,25 +1,31 @@
-import 'dart:io';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'data/models/app_config.dart';
 export 'package:weather/src/globals/enums.dart';
-export 'package:weather/src/globals/widgets.dart';
-const String ENGLISH = 'en';
+export 'package:weather/src/ui/widgets/weather_card.dart';
 
 class Globals {
-  static String _language;
-  static String title;
-  static bool isIOS = Platform.isIOS;
+  static late final MediaQueryData mediaData;
 
-  static Map<String, dynamic> localization;
+  static late final AppConfig appConfig;
 
-  static Future<void> initGlobal() async {
-    // set core lang to ENGLISH
-    title = 'Weather App';
-    _language = ENGLISH;
-//    localization = await getLangData();
+  static const String title = 'The Weather App';
+
+  static final GlobalKey<ScaffoldState> globalScaffoldKey = GlobalKey<ScaffoldState>();
+
+  static Future<void> initConfigurations() async {
+    // // app config
+    String? appData = await rootBundle.loadString('assets/configs/config.json');
+    appConfig = AppConfig.fromJson(json.decode(appData));
+
+    return;
   }
 
-// LOCALIZATION
-// static Future<Map<String, dynamic>> getLangData() async {
-//   String data = await rootBundle.loadString('assets/json/$_language/core.json');
-//   return json.decode(data);
-// }
+  static Future<Map<String, dynamic>> getData(String path) async {
+    String data = await rootBundle.loadString(path);
+    return json.decode(data);
+  }
 }

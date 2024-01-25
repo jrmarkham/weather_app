@@ -1,79 +1,41 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather/src/data/blocs/ui/ui_bloc.dart';
-import 'package:weather/src/data/blocs/weather/weather_bloc.dart';
-import 'package:weather/src/globals.dart';
-import 'package:weather/src/screens/home_screen.dart';
-import 'package:weather/src/screens/search_screen.dart';
-import 'package:weather/src/screens/world_screen.dart';
+import 'package:weather/src/data/blocs/check_internet/check_internet_cubit.dart';
 
-class CoreApp extends StatefulWidget {
-  @override
-  _CoreAppState createState() => _CoreAppState();
-}
+import 'data/blocs/navigation/navigation_cubit.dart';
+import 'ui/screens/home_screen.dart';
+import 'ui/screens/offline_screen.dart';
+import 'ui/screens/search_screen.dart';
+import 'ui/screens/detail_screen.dart';
 
-class _CoreAppState extends State<CoreApp> {
-  UIBloc _uiBloc;
-  WeatherBloc _weatherBloc;
-
-  @override
-  void initState() {
-    // init bloc for ui
-    _uiBloc = BlocProvider.of<UIBloc>(context);
-    // init bloc to handle the weather
-    _weatherBloc = BlocProvider.of<WeatherBloc>(context)..getHomeWeather();
-
-    super.initState();
-  }
+class CoreApp extends StatelessWidget {
+  const CoreApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return
+    final ThemeData theme = Theme.of(context);
+    return BlocBuilder<CheckInternetCubit, ConnectivityResult>(
+      bloc: BlocProvider.of<CheckInternetCubit>(context),
+      builder: (BuildContext context, ConnectivityResult state) {
+        debugPrint('ConnectivityResult state $state');
 
-      MultiBlocListener(
-          listeners: [
-            BlocListener<UIBloc, UIBlocState>(
-                bloc: _uiBloc,
-                listener: (BuildContext context,
-                    UIBlocState state) {
-                  debugPrint('UIBloc Listener state :: ${state.toString()} ');
-                  if(state is UIBlocStateRefreshWeather){
-                    _weatherBloc.getHomeWeather();
-                  }
-
-                }),
-            BlocListener<WeatherBloc, WeatherBlocState>(
-                bloc: _weatherBloc,
-                listener: (BuildContext context,
-                    WeatherBlocState state) {
-                  debugPrint('WeatherBloc Listener state :: ${state.toString()}');
-                })
-          ],
-
-          child: Scaffold(
-              appBar: AppBar(
-                title: Text(Globals.title),
-              ),
-              body: BlocBuilder<UIBloc, UIBlocState>(
-
-                bloc: _uiBloc,
-                builder: (BuildContext context, UIBlocState state) {
-                  return _getScreen(state.navScreen);
-                },
-              )
-          ));
+        final bool isConnected = state != ConnectivityResult.none;
+        return isConnected
+            ? BlocBuilder<NavigationCubit, NavScreenStatus>(
+                bloc: BlocProvider.of<NavigationCubit>(context),
+                builder: (BuildContext context, NavScreenStatus navState) => Navigator(
+                        // transitionDelegate:
+                        pages: <MaterialPage<dynamic>>[
+                          if (navState == NavScreenStatus.home) MaterialPage<dynamic>(child: HomeScreen(theme)),
+                          if (navState == NavScreenStatus.search) MaterialPage<dynamic>(child: SearchScreen(theme)),
+                          if (navState == NavScreenStatus.setting) MaterialPage<dynamic>(child: SettingScreen(theme)),
+                        ],
+                        onPopPage: (Route<dynamic> route, dynamic result) {
+                          return route.didPop(result);
+                        }))
+            : OfflineScreen(theme);
+      },
+    );
   }
-
-  Widget _getScreen(NavScreen navScreen) {
-    switch (navScreen) {
-      case NavScreen.search:
-        return SearchScreen();
-      case NavScreen.world:
-        return WorldScreen();
-      case NavScreen.home:
-      default:
-        return HomeScreen();
-    }
-  }
-
 }

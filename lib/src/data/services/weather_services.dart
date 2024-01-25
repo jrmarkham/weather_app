@@ -1,14 +1,12 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:weather/src/data/models/weather.dart';
-
-const String API_KEY = 'e69862ee95de83396ff097cd01ba6dfb';
+import 'package:weather/src/data/models/app_weather.dart';
+import 'package:weather/src/globals.dart';
 
 abstract class BaseWeatherServices {
-  Future<BaseWeather> getWeatherDataLatLong(
-      {@required String latitude, @required String longitude});
+  Future<AppWeatherData?> getWeatherDataLatLong({required String latitude, required String longitude});
 }
 
 class WeatherServices extends BaseWeatherServices {
@@ -19,36 +17,46 @@ class WeatherServices extends BaseWeatherServices {
 
   WeatherServices.internal();
 
-  Future<BaseWeather> getWeatherDataLatLong(
-      {@required String latitude, @required String longitude}) async {
+  @override
+  Future<AppWeatherData?> getWeatherDataLatLong({required String latitude, required String longitude}) async {
+    final String url = '${Globals.appConfig.api}$latitude,$longitude';
 
-    final String url = 'https://api.weather.gov/points/$latitude,$longitude';
-    final http.Response response = await http.get(Uri.parse(url));
-    final Map<String, dynamic> responseJson = json.decode(response.body);
-    // get forecast url
-    final String forecast = responseJson['properties']['forecast'];
+    try {
+      final http.Response response = await http.get(Uri.parse(url));
+      final Map<String, dynamic> responseJson = json.decode(response.body);
 
+      if (response.statusCode != 200) {
+        return null;
+      }
+
+      // get forecast url
+      final String forecast = responseJson['properties']['forecast'];
+
+      if (responseJson.isNotEmpty) {
+        return _getForecastDataFromURL(forecast);
+      }
+
+      return null;
+    } on Exception catch (e) {
+      debugPrint('getWeatherDataLatLong  error $e');
+      return null;
+    }
     //  return forecastData as model
-
-
-    return forecast == null ? null : _getForecastDataFromURL(forecast);
   }
 
-  Future<BaseWeather> _getForecastDataFromURL (String url) async{
-    final http.Response forecastResponse = await http.get(Uri.parse(url));
-    final Map<String, dynamic> forecastJson = json.decode(forecastResponse.body);
-    // get specific data for current forecast
-    final Map<String, dynamic> forecastData = forecastJson['properties']['periods'][0];
+  Future<AppWeatherData?> _getForecastDataFromURL(String url) async {
+    try {
+      final http.Response forecastResponse = await http.get(Uri.parse(url));
+      if (forecastResponse.statusCode == 200) {
+        //  return forecastData as model
 
-    //  return forecastData as model
-
-    return BaseWeather(
-        temperature: forecastData["temperature"].toString(),
-        temperatureUnit: forecastData["temperatureUnit"].toString(),
-        windSpeed: forecastData["windSpeed"].toString(),
-        windDirection: forecastData["windDirection"].toString(),
-        forecast: forecastData["shortForecast"].toString(),
-        details: forecastData["detailedForecast"].toString());
-
+        return AppWeatherData.fromJson(json.decode(forecastResponse.body)['properties']['periods'][0]);
+      }
+      debugPrint('_getForecastDataFromURL  error status code ${forecastResponse.statusCode}');
+      return null;
+    } on Exception catch (e) {
+      debugPrint('_getForecastDataFromURL  error $e');
+      return null;
+    }
   }
 }

@@ -1,0 +1,6 @@
+{
+  "type": "prod",
+  "version": "1.0.0",
+  "api": "https://api.weather.gov/points/",
+  "key" : "e69862ee95de83396ff097cd01ba6dfb"
+}
