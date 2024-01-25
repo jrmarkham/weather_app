@@ -16,12 +16,8 @@ class CoreApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return BlocBuilder<CheckInternetCubit, ConnectivityResult>(
-      bloc: BlocProvider.of<CheckInternetCubit>(context),
-      builder: (BuildContext context, ConnectivityResult state) {
-        debugPrint('ConnectivityResult state $state');
-
-        final bool isConnected = state != ConnectivityResult.none;
-        return isConnected
+        bloc: BlocProvider.of<CheckInternetCubit>(context),
+        builder: (BuildContext context, ConnectivityResult state) => state != ConnectivityResult.none
             ? BlocBuilder<NavigationCubit, NavScreenStatus>(
                 bloc: BlocProvider.of<NavigationCubit>(context),
                 builder: (BuildContext context, NavScreenStatus navState) => Navigator(
@@ -34,8 +30,6 @@ class CoreApp extends StatelessWidget {
                         onPopPage: (Route<dynamic> route, dynamic result) {
                           return route.didPop(result);
                         }))
-            : OfflineScreen(theme);
-      },
-    );
+            : OfflineScreen(theme));
   }
 }

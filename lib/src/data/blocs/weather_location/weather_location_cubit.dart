@@ -1,7 +1,7 @@
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weather/src/data/models/app_weather.dart';
 
 import '../../models/app_location.dart';
@@ -19,8 +19,9 @@ class WeatherLocationCubit extends Cubit<WeatherLocationState> {
   WeatherLocationCubit() : super(WeatherLocationState.init());
 
   Future<void> requestLocation() async {
-    emit(state.copyWith(WeatherLocationStatus.loading));
-
+    if (state.status == WeatherLocationStatus.init) {
+      emit(state.copyWith(WeatherLocationStatus.loading));
+    }
     final GeolocatorPlatform geoPlat = GeolocatorPlatform.instance;
 
     if (!await geoPlat.isLocationServiceEnabled()) {
@@ -82,7 +83,8 @@ class WeatherLocationCubit extends Cubit<WeatherLocationState> {
 
     newList.add(AppWeatherLocationData(location: locationData, weather: weatherData!));
 
-    emit(state.copyWith(WeatherLocationStatus.loaded, updateWeatherLocationList: List<AppWeatherLocationData>.unmodifiable(newList.toList())));
+    emit(state.copyWith(WeatherLocationStatus.loaded,
+        updateWeatherLocationList: List<AppWeatherLocationData>.unmodifiable(newList.reversed.toList())));
   }
 
   Future<void> _runNewYorkDefault() async {
