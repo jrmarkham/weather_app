@@ -19,7 +19,6 @@ class WeatherLocationCubit extends Cubit<WeatherLocationState> {
   WeatherLocationCubit() : super(WeatherLocationState.init());
 
   Future<void> requestLocation() async {
-    debugPrint('requestLocation ');
     emit(state.copyWith(WeatherLocationStatus.loading));
 
     final GeolocatorPlatform geoPlat = GeolocatorPlatform.instance;
@@ -54,9 +53,6 @@ class WeatherLocationCubit extends Cubit<WeatherLocationState> {
     final AppWeatherData? weatherData =
         await _weatherServices.getWeatherDataLatLong(latitude: location.latitude.toString(), longitude: location.longitude.toString());
 
-    //
-    debugPrint('weatherData ${weatherData?.temperature.toString()}');
-    //
     if (weatherData == null) {
       emit(state.copyWith(WeatherLocationStatus.error));
       return;
@@ -75,8 +71,6 @@ class WeatherLocationCubit extends Cubit<WeatherLocationState> {
   }
 
   Future<void> addLocation(AppLocationData locationData) async {
-    debugPrint('add Search data  ');
-
     final AppWeatherData? weatherData =
         await _weatherServices.getWeatherDataLatLong(latitude: locationData.latitude, longitude: locationData.longitude);
     if (weatherData == null) {
@@ -92,7 +86,6 @@ class WeatherLocationCubit extends Cubit<WeatherLocationState> {
   }
 
   Future<void> _runNewYorkDefault() async {
-    debugPrint('location data default to New York');
     final AppWeatherData? weatherData = await _weatherServices.getWeatherDataLatLong(latitude: _defaultLatitude, longitude: _defaultLongitude);
 
     weatherData == null

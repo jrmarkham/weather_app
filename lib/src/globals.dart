@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'data/models/app_config.dart';
-export 'package:weather/src/globals/enums.dart';
 export 'package:weather/src/ui/widgets/weather_card.dart';
 
 class Globals {
