@@ -23,9 +23,14 @@ class HomeScreen extends StatelessWidget {
 
         return MainScreenScaffold(
             body: Column(children: [
-              if (state.status == WeatherLocationStatus.loaded) ...[WeatherCard(state.userWeatherLocation!)],
-              if (state.status == WeatherLocationStatus.error) ...[const Text('service error no data today')],
-              if (state.status == WeatherLocationStatus.init || state.status == WeatherLocationStatus.loading) ...[const Text('loading data')],
+              if (state.status == WeatherLocationStatus.loaded) ...[WeatherCard(data: state.userWeatherLocation!, theme: theme)],
+              if (state.status == WeatherLocationStatus.error) ...[
+                Text('Services are unavailable ', style: theme.textTheme.titleLarge?.copyWith(color: Colors.red)),
+                if (state.status == WeatherLocationStatus.init || state.status == WeatherLocationStatus.loading) ...[
+                  Text('Loading data ', style: theme.textTheme.titleMedium),
+                  const CircularProgressIndicator(),
+                ]
+              ]
             ]),
             showNav: state.status == WeatherLocationStatus.loaded);
       },

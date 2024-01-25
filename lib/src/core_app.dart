@@ -7,7 +7,7 @@ import 'data/blocs/navigation/navigation_cubit.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/screens/offline_screen.dart';
 import 'ui/screens/search_screen.dart';
-import 'ui/screens/detail_screen.dart';
+import 'ui/screens/setting_screen.dart';
 
 class CoreApp extends StatelessWidget {
   const CoreApp({super.key});

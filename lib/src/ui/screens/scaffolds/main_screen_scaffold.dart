@@ -40,6 +40,7 @@ class MainScreenScaffold extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: theme.colorScheme.background,
           title: const Text(Globals.title),
+          centerTitle: true,
         ),
 
         // backgroundColor: colorTransparent,

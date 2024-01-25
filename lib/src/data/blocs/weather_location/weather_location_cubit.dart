@@ -1,4 +1,5 @@
-import 'package:fl_location/fl_location.dart' as fll;
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/src/data/models/app_weather.dart';
@@ -21,37 +22,38 @@ class WeatherLocationCubit extends Cubit<WeatherLocationState> {
     debugPrint('requestLocation ');
     emit(state.copyWith(WeatherLocationStatus.loading));
 
-    if (!await fll.FlLocation.isLocationServicesEnabled) {
-      // Location services are disabled.
+    final GeolocatorPlatform geoPlat = GeolocatorPlatform.instance;
 
+    if (!await geoPlat.isLocationServiceEnabled()) {
+      // Location services are disabled.
       debugPrint('service down');
       emit(state.copyWith(WeatherLocationStatus.error));
 
       return;
     }
 
-    fll.LocationPermission locationPermission = await fll.FlLocation.checkLocationPermission();
-    if (locationPermission == fll.LocationPermission.deniedForever) {
+    var permission = await geoPlat.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
       _runNewYorkDefault();
       return;
-    } else if (locationPermission == fll.LocationPermission.denied) {
+    } else if (permission == LocationPermission.denied) {
       // Ask the user for location permission.
-      locationPermission = await fll.FlLocation.requestLocationPermission();
-      if (locationPermission == fll.LocationPermission.denied || locationPermission == fll.LocationPermission.deniedForever) {
+      permission = await geoPlat.requestPermission();
+      if (permission == LocationPermission.deniedForever || permission == LocationPermission.denied) {
         _runNewYorkDefault();
 
         return;
       }
     }
 
-    const timeLimit = Duration(seconds: 10);
+    final Position location = await geoPlat.getCurrentPosition(
+        locationSettings: const LocationSettings(
+      accuracy: LocationAccuracy.best,
+    ));
 
-    final fll.Location location = await fll.FlLocation.getLocation(timeLimit: timeLimit);
-
-    //
     final AppWeatherData? weatherData =
         await _weatherServices.getWeatherDataLatLong(latitude: location.latitude.toString(), longitude: location.longitude.toString());
-    //
+
     //
     debugPrint('weatherData ${weatherData?.temperature.toString()}');
     //
@@ -60,12 +62,13 @@ class WeatherLocationCubit extends Cubit<WeatherLocationState> {
       return;
     }
 
-    // Android chokes on this plugin
-    // final result = await LocationPlus.getCurrentLocation();
-    // final String name = result['locality'];
+    // get proper name
+    final List<Placemark> places = await placemarkFromCoordinates(location.latitude, location.longitude);
+
+    final String home = places.first.locality ?? 'Home';
 
     final AppWeatherLocationData mainData = AppWeatherLocationData(
-        location: AppLocationData(name: 'Home', latitude: location.latitude.toString(), longitude: location.longitude.toString()),
+        location: AppLocationData(name: home, latitude: location.latitude.toString(), longitude: location.longitude.toString()),
         weather: weatherData);
 
     emit(state.copyWith(WeatherLocationStatus.loaded, updateUserWeatherLocation: mainData, updateWeatherLocationList: [mainData]));

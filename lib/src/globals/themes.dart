@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-const String _mainFont = 'Roboto';
+import 'package:google_fonts/google_fonts.dart';
 
 final mainTheme = ThemeData(
   useMaterial3: true,
@@ -9,39 +8,31 @@ final mainTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: Colors.blue,
     primary: Colors.blue,
-    secondary: Colors.redAccent,
-    background: Colors.lightBlue[200],
+    secondary: Colors.blueAccent,
+    background: Colors.blue[50],
     brightness: Brightness.light,
   ),
 
 // Define the default `TextTheme`. Use this to specify the default
 // text styling for headlines, titles, bodies of text, and more.
-  textTheme: const TextTheme(
-    displayLarge: TextStyle(
-      fontSize: 42,
-      fontFamily: _mainFont,
+  textTheme: TextTheme(
+    titleLarge: GoogleFonts.aboreto(
       fontWeight: FontWeight.bold,
-    ),
-// ···
-    titleLarge: TextStyle(
-      fontFamily: _mainFont,
-      fontWeight: FontWeight.bold,
+      color: Colors.blue,
       fontSize: 32,
     ),
-
-    titleMedium: TextStyle(
-      fontFamily: _mainFont,
+    titleMedium: GoogleFonts.aboreto(
       fontWeight: FontWeight.bold,
+      color: Colors.blue,
       fontSize: 24,
     ),
-    titleSmall: TextStyle(
-      fontFamily: _mainFont,
+    titleSmall: GoogleFonts.aboreto(
       fontWeight: FontWeight.bold,
+      color: Colors.blue,
       fontSize: 18,
     ),
-    bodyLarge: TextStyle(fontFamily: _mainFont, fontSize: 16),
-    bodyMedium: TextStyle(fontFamily: _mainFont, fontSize: 12),
-
-    bodySmall: TextStyle(fontFamily: _mainFont, fontSize: 10),
+    bodyLarge: GoogleFonts.roboto(fontSize: 24),
+    bodyMedium: GoogleFonts.roboto(fontSize: 16),
+    bodySmall: GoogleFonts.roboto(fontSize: 12),
   ),
 );

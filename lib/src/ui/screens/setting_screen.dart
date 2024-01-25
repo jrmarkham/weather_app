@@ -6,9 +6,9 @@ class SettingScreen extends StatelessWidget {
   const SettingScreen(this.theme, {super.key});
 
   @override
-  Widget build(BuildContext context) => const MainScreenScaffold(
+  Widget build(BuildContext context) => MainScreenScaffold(
         body: Column(
-          children: [Text("settings")],
+          children: [Text('Setting', style: theme.textTheme.titleLarge), Text('got nuthin\' yet', style: theme.textTheme.bodyMedium)],
         ),
       );
 }

@@ -44,13 +44,13 @@ class SearchScreen extends StatelessWidget {
             onTap: () => closeOverlay(),
             child: Material(
                 type: MaterialType.transparency,
-                child: Center(child: SizedBox(width: mediaData.size.width * 0.85, height: mediaData.size.height * 0.65, child: WeatherCard(data)))));
+                child: Center(
+                    child: SizedBox(
+                        width: mediaData.size.width * 0.85, height: mediaData.size.height * 0.65, child: WeatherCard(data: data, theme: theme)))));
       });
 
       Overlay.of(context).insert(overlayWidget!);
     }
-
-    // void addLocationToList (PickedData pickedData) => weatherLocationCubit.addLocation();
 
     return BlocBuilder<WeatherLocationCubit, WeatherLocationState>(
         bloc: weatherLocationCubit,
@@ -80,7 +80,7 @@ class SearchScreen extends StatelessWidget {
                             itemCount: state.weatherLocationList.length,
                             itemBuilder: (BuildContext context, int idx) {
                               final AppWeatherLocationData data = state.weatherLocationList[idx];
-                              return InkWell(onTap: () => showOverLay(data), child: WeatherMiniCard(data));
+                              return InkWell(onTap: () => showOverLay(data), child: WeatherMiniCard(data: data, theme: theme));
                             }))
               ]
             ],

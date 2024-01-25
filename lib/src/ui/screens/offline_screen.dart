@@ -5,9 +5,11 @@ class OfflineScreen extends StatelessWidget {
   final ThemeData theme;
   const OfflineScreen(this.theme, {super.key});
   @override
-  Widget build(BuildContext context) => const MainScreenScaffold(
+  Widget build(BuildContext context) => MainScreenScaffold(
         body: Column(
-          children: [Text('you\'re offline')],
+          children: [
+            Text('You\'re Offline', style: theme.textTheme.titleLarge?.copyWith(color: Colors.red)),
+          ],
         ),
         showNav: false,
       );
